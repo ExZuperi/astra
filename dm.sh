@@ -35,8 +35,7 @@ apt install socat conntrack -y
 
 #	Folder and install
 mkdir /dm
-mv iw_device* /dm/
-mv "install.sh" /dm/
+mv i* /dm/
 cd /dm/
 tar xvf iw_devicemonitor*
 
@@ -61,6 +60,8 @@ cp /tmp/site-certificate.crt /usr/local/share/ca-certificates/
 cp /tmp/plca.crt /usr/local/share/ca-certificates/
 update-ca-certificates
 kubectl get secret guardkeys-central -n infowatch -o 'go-template={{index .data "ec256-public.pem"}}' | base64 -d > /tmp/guard.pem
+echo "Platform key is on: /tmp/guard.pem"
 
+#	Install script run
 chmod +x ./install.sh
 ./install.sh
