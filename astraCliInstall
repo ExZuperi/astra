@@ -1,0 +1,47 @@
+sudo systemctl stop network-manager
+sudo systemctl disable network-manager
+sudo systemctl mask network-manager
+sudo hostnamectl set-hostname cli.aldpro.lab
+
+sudo nano /etc/network/interfaces
+auto eth0
+iface eth0 inet static
+  address 192.168.1.14
+  netmask 255.255.255.0
+  gateway 192.168.1.1
+  dns-nameservers 192.168.1.10
+  dns-search aldpro.lab
+
+sudo systemctl restart networking
+
+sudo nano /etc/hosts
+127.0.0.1 localhost.localdomain localhost
+192.168.1.14 cli.aldpro.lab cli
+127.0.1.1 cli
+51.250.6.116 dl.astralinux.ru
+192.168.1.12 adc.aldpro.lab adc
+ipv6 comment
+reboot
+
+echo "deb http://dl.astralinux.ru/astra/frozen/1.7_x86-64/1.7.3/repository-base/ 1.7_x86-64  main non-free contrib" > /etc/apt/sources.list
+echo "deb http://dl.astralinux.ru/astra/frozen/1.7_x86-64/1.7.3/repository-extended/ 1.7_x86-64  main contrib non-free" >> /etc/apt/sources.list
+echo -e "deb http://dl.astralinux.ru/aldpro/stable/repository-main/ 2.1.0 main" | sudo tee /etc/apt/sources.list.d/aldpro.list
+echo -e "deb http://dl.astralinux.ru/aldpro/stable/repository-extended/ generic main" | sudo tee -a /etc/apt/sources.list.d/aldpro.list
+
+sudo nano /etc/apt/preferences.d/aldpro
+Package: *
+Pin: release n=generic
+Pin-Priority: 900
+
+sudo apt update
+sudo apt install astra-update -y && sudo astra-update -A -r -T
+reboot
+
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y aldpro-client
+
+apt install resolvconf
+nano /etc/resolv.conf
+nameserver 192.168.1.12
+search aldpro.lab
+
+/opt/rbta/aldpro/client/bin/aldpro-client-installer
