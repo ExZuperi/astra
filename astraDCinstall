@@ -56,7 +56,10 @@ search demo.lab
 nameserver 192.168.1.1
 
 sudo /etc/network/interfaces add
-
-https://wiki.astralinux.ru/pages/viewpage.action?pageId=181666063
   dns-nameservers 192.168.1.1
   dns-search demo.lab
+
+Graph login of user: 
+https://wiki.astralinux.ru/pages/viewpage.action?pageId=181666063
+Sudo usage:
+https://wiki.astralinux.ru/pages/viewpage.action?pageId=105972922
